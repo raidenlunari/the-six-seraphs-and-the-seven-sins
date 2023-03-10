@@ -5,6 +5,10 @@ import time
 def beginGame():
     create_instructions()
     cutscene(1)
+    meetCharacter("ANGEL")
+    cutscene(2)
+    meetCharacter("AVA")
+    enterCity("MADDA")
 
 def die():
     global deaths
@@ -186,6 +190,22 @@ def bankInterest(timeElapsed):
 
     bankAccount += timeElapsed*(1+rates)
 
+def enterCity(activator):
+    
+    def maddaGate():
+        global maddaKeys
+
+        triedKeys = input("Input Keys to the City: ")
+        if triedKeys == maddaKeys:
+            print("Welcome to the City! Enjoy your stay in Madda Gate.")
+        else:
+            print("You got lost! Lose 5 hunger bar, 5 drink bar, and gain 5 fatigue value!")
+            eat(-5)
+            drink(-5)
+            sleep(-5)
+
+    if activator == "MADDA":
+        maddaGate()
 
 def fightingMoves(activator):
 
@@ -275,7 +295,6 @@ def create_instructions():
     print("For example, try this out here. ")
     input("")
     print("During combat, please simply type in appropriate skills and you will use an action. ")
-    print("Inventory can only be accessed at specific points during the adventure. \nIt's strongly advised to use inventory items before a major expedition, as you cannot always access this part of the game.")
     print("Answers are case-sensitive. Answer in UPPERCASE or lowercase when asked or appropriate.")
     input("")
     print("Thank you for joining us on this adventure! We hope you enjoy the game and succeed.\n")
@@ -316,8 +335,10 @@ def cutscene(activator):
         print("___E: I believe that they went MIA a while ago."); time.sleep(0.2)
         print("D____: Impossible. That's impossible to be true."); time.sleep(0.2)
         input("")
-        print("___E: ..."); time.sleep(0.1)
-        print("D____: ..."); time.sleep(0.1)
+        print("You hear a crunching sound under your foot. You're heard."); time.sleep(0.5)
+        input("")
+        print("___E: ..."); time.sleep(0.2)
+        print("D____: ..."); time.sleep(0.2)
         print("___E: At long last."); time.sleep(0.2)
         print(name+": ___E? D____? What are you trying to do?"); time.sleep(0.2)
         print("___E: I'm sorry. But you cannot be on this planet any longer."); time.sleep(0.5)
@@ -333,12 +354,126 @@ def cutscene(activator):
         print(name+": ...")
         input("")
         print("TIME: 21: 15, April 21, 6051 \nLOCATION: GENESIS \nTRANSMISSION: 16171"); time.sleep(1)
-        print("Automated Voice of ___E: Welcome. You have landed at your destination, GENESIS. \nAutomated Voice of ___E: It has been 111 Years, 9 Months, and 10 Days since you began your journey.")
-        print("Automated Voice of ___E: Thank you. You won't be forgotten. But I will.")
+        print("Automated Voice of ___E: Welcome. You have landed at your destination, GENESIS. \nAutomated Voice of ___E: It has been 777 Years, 9 Months, and 10 Days since you began your journey."); time.sleep(0.5)
+        print("Automated Voice of ___E: Thank you. You won't be forgotten. But I will. \n"); time.sleep(5)
+
+    def cutscene2():
+        print("You walk on the soft plains slowly, wondering where you are."); time.sleep(0.2)
+        print("SANCTUARY City certainly wasn't like this. The capital of the Sechsturme's Celestial City was bright, and white, and technologically advanced."); time.sleep(0.2)
+        print("Until, of course, it wasn't."); time.sleep(0.2)
+        print("Those gray streets vaguely pictured in your mind, abandoned by civilization."); time.sleep(0.2)
+        print("How awful."); time.sleep(0.2)
+        print("You thought about what ANGEL said to you, however. This city seemed much further away than it made it sound."); time.sleep(0.2)
+        input("")
+        print("By now, it'd been hours."); time.sleep(0.2)
+        print("Had ANGEL lied to you? That'd be hard to believe, but betrayal, was, after all, what ___E was so angered about."); time.sleep(0.2)
+        print("A splitting headache appears in your mind. The older ones had told you about this kind of headache, the splitting, horrid pain of thinking of memories long gone."); time.sleep(0.2)
+        print("However, it just seemed worse for you. Why? You couldn't understand. Even the simulations couldn't predict the vividness of these memories in your head."); time.sleep(0.2)
+        print("Then, you remembered a crucial detail. What you heard ___E say."); time.sleep(0.2)
+        input("")
+        print("An even worse pain appeared, but in your heart."); time.sleep(0.2)
+        print("It'd seriously been so long, you thought."); time.sleep(0.2)
+        print("You try to send a message to the higher-ups."); time.sleep(0.2)
+        input("")
+        print("TIME: 16:55, August 08, 6051 \nLOCATION: GENESIS \nTRANSMISOIN: 16172"); time.sleep(1)
+        print(name+": Testing, testing! Come in, SALVATION City!"); time.sleep(0.2)
+        print("6051?")
+        print("16172? But the last message was only 16171, and the technology was new-"); time.sleep(0.2)
+        print("It hit you."); time.sleep(0.2)
+        print("No new messages."); time.sleep(0.2)
+        print("The 61st century's middle years."); time.sleep(0.2)
+        print("You were... seriously alone, now."); time.sleep(0.2)
+        input(""); time.sleep(1)
+        print("Time stops for nobody."); time.sleep(0.2)
+        input(""); time.sleep(1)
+
 
     if activator == 1:
         cutscene1()
 
+    elif activator == 2:
+        cutscene2()
+
+def meetCharacter(activator):
+    def meetAngel():
+        global hungerBar
+        global drinkBar
+        global fatigueValue
+        global currentHealth
+        global money
+        global bankAccount
+
+        print("XXXXX: Hey! Hey!")
+        input("")
+        print("XXXXX: Hey there! Who are you?"); time.sleep(0.5)
+        print("XXXXX: How ya doin? You've been out for a few months already!"); time.sleep(0.5)
+        print("XXXXX: Ah! I forgot to introduce myself! I'm the angel of this realm! Nice to meet you!"); time.sleep(0.5)
+        print("ANGEL: What brings you to Madda Gate?"); time.sleep(0.5)
+        input("")
+        print("ANGEL: Hmm. Whatever the reason is, you look confused. Come on, I'll lead you to the city!"); time.sleep(0.5)
+        print("ANGEL: It's been a few years since I've gone there either, though, so I hope I can still lead you correctly!"); time.sleep(0.5)
+        print("ANGEL: Do you want an introduction to the city?")
+        angelChoice = input("Input YES or NO: ")
+        if angelChoice == "YES" or angelChoice == "yes":
+            print("ANGEL: Alright, I'll give it my best shot! Anyways, Madda Gate is famous for its pleasant weather, warm breezes, active population, and beautiful architecture!"); time.sleep(0.5)
+            print("ANGEL: It's commonly believed as the birthplace of this planet's civilization, and the front door for any visitors we get!"); time.sleep(0.5)
+            print("ANGEL: If you're a visitor, this is the place for you!"); time.sleep(0.5)
+        elif angelChoice == "NO" or angelChoice == "no":
+            print("ANGEL: That's alright! As long as you're happy, I'm happy!"); time.sleep(0.5)
+        else:
+            print("ANGEL: Hmm... I dunno what you're saying, but I guess that means a no?"); time.sleep(0.5)
+        print("ANGEL: Anyways, let's introduce you to this planet a bit!"); time.sleep(0.5)
+        input("")
+        print("ANGEL: This planet is generally known by it's people as GENESIS, which means... uhh... something complicated I can't remember!"); time.sleep(0.5)
+        print("ANGEL: It's mostly safe, from what I've seen, but lemme try to help you out with more basic stuff!"); time.sleep(0.5)
+        print("ANGEL: To stay healthy, you need food and drink!"); time.sleep(0.5)
+        print("Your current hunger bar is", str(hungerBar)+"."); time.sleep(0.5)
+        print("Your current drink bar is", str(drinkBar)+"."); time.sleep(0.5)
+        print("Your current fatigue value is", str(fatigueValue)+"."); time.sleep(0.5)
+        print("ANGEL: It may sound weird, but you want BARS as HIGH as possible and VALUES as LOW as possible!"); time.sleep(0.5)
+        input("")
+        print("ANGEL: Ah! Moving on, your current health is at", str(currentHealth)+"."); time.sleep(0.5)
+        print("ANGEL: You have", str(money), "dollars right now too! And the world bank starts everyone off with", str(bankAccount), "dollars in the bank. \nANGEL: Worldwide rates are, mmm, GENERALLY at around 2.5% per time interval."); time.sleep(0.5)
+        print("ANGEL: Well, that's all! I gotta run, but if you need anything, someone'll be there to help you out!"); time.sleep(0.5)
+        print("ANGEL: AH! How could I forget? Don't ever forget the keys to the city!\n"); time.sleep(0.5)
+
+    def meetAva():
+        global maddaKeys
+
+        print("AVA: Yo, what are you looking so wistfully at?"); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("AVA: Hello?"); time.sleep(0.2)
+        print("AVA: Rude. The name's Ava."); time.sleep(0.2)
+        print(name+": Oh. Sorry, I was busy over there."); time.sleep(0.2)
+        print("AVA: That's visible. Whatever, anyways, what'cha lookin' for?"); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("AVA: Uhhh. The city? I... don't think you know where this is. You lookin' for the next over? Mae- oh. Sigh, you're lookin' for Madda Gate, ain't ya?"); time.sleep(0.2)
+        print("AVA: Hahaha! My grandparents would love being with you. Always talkin' about some... uhh, Madda City? I dunno."); time.sleep(0.2)
+        print("AVA: Some sanctuary city too, something to deal with it, yadda yadda."); time.sleep(0.2)
+        print("AVA: Grandparents' legends, am I right?"); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print(name+": I'm from this SANCTUARY City. Do you know where I can find it?"); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("AVA: Haha! You're funny. There's no way. It's a legend. Some sanctuary was used as a story a good few hundred years ago, and some of the oldies tell it today."); time.sleep(0.2)
+        print("AVA: It's 666 PH now, we don't believe in this stuff."); time.sleep(0.2)
+        print(name+": It's 6051 PC. I'm serious about SANCTUARY City."); time.sleep(0.2)
+        print("AVA: Uhh. What? 6051? What are you on? How old are you, or how YOUNG are you? Negative five thousand years old, or whatever?"); time.sleep(0.2)
+        print("AVA: And PC? What even is that? Post C-Heaven? Everybody knows about Heaven's Collapse 666 years ago. I'm not sure what C is."); time.sleep(0.2)
+        print(name+": C for Celestia. 6051 Years past the Grand Raising of Celestia from the Sechsturme's First Spaceport in Berlin of Europa."); time.sleep(0.2)
+        print("AVA: Uhhhh. Speak English?"); time.sleep(0.2)
+        print("AVA: Point is, you wanna get to Madda Gate? Lucky you. I know the key, and the direction. The keys to the city are", maddaKeys+"."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("AVA: Yeah, yeah. You're welcome. Now go spread your Sanctuary Heretic Religion somewhere else."); time.sleep(0.2)
+        print("AVA: Peace out!\n"); time.sleep(0.2)
+
+    if activator == "ANGEL":
+        meetAngel()
+
+    elif activator == "AVA":
+        meetAva()
+
+
+maddaKeys = "M41M552A"
 
 maxFoodValue = 50
 maxDrinkValue = 50
@@ -361,6 +496,5 @@ skillpoint = 100
 
 name = ""
 skills = "SINGLEPUNCH | TWOPUNCH | THREEPUNCH | GATLING | SWORDFIGHT"
-inventory = ""
 
 beginGame()
