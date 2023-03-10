@@ -77,11 +77,11 @@ def drinkLoss(timeElapsed):
 
 def sleep(sleepValue):
     global fatigueValue
-    global minFatigueValue
+    global minSleepValue
 
     sleepValue = int(sleepValue)
-    if (fatigueValue - sleepValue) < minFatigueValue:
-        fatigueValue = minFatigueValue
+    if (fatigueValue - sleepValue) < minSleepValue:
+        fatigueValue = minSleepValue
         print("Your new fatigue level is at", fatigueValue+".")
     else:
         fatigueValue -= sleepValue
