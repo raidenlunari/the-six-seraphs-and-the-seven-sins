@@ -3,12 +3,20 @@ import math
 import time
 
 def beginGame():
+    
+    # phase ONE
     create_instructions()
     cutscene(1)
     meetCharacter("ANGEL")
     cutscene(2)
     meetCharacter("AVA")
     enterCity("MADDA")
+    cutscene(3)
+    maddaChoiceOne = input("What would you like to do in Madda Gate? Answer with SHOP, WALK, or MOVE ON: ")
+    if maddaChoiceOne == "SHOP":
+        meetCharacter("BETH")
+    elif maddaChoiceOne == "WALK":
+        meetCharacter("MADDANPC")
 
 def die():
     global deaths
@@ -32,20 +40,12 @@ def eat(foodValue):
     foodValue = int(foodValue)
     if (hungerBar + foodValue) > maxFoodValue:
         hungerBar = maxFoodValue-foodValue
-        print("Your new hunger bar is at", hungerBar+".")
+        print("Your new hunger bar is at", str(hungerBar)+".")
     else:
         hungerBar += foodValue
-        print("Your new hunger bar is at", hungerBar+".")
+        print("Your new hunger bar is at", str(hungerBar)+".")
     if hungerBar <= 0:
         die()
-
-
-def eatEffect(currentHunger, timeElapsed):
-    global currentHealth
-    global maxFoodValue
-
-    lackFood = maxFoodValue - currentHunger
-    currentHealth -= 0.75*lackFood*timeElapsed*(6/math.log(defense))
 
 
 def eatLoss(timeElapsed):
@@ -61,19 +61,12 @@ def drink(drinkValue):
     drinkValue = int(drinkValue)
     if (drinkBar + drinkValue) > maxDrinkValue:
         drinkBar = maxDrinkValue-drinkValue
-        print("Your new drink bar is at", drinkBar+".")
+        print("Your new drink bar is at", str(drinkBar)+".")
     else:
         drinkBar += drinkValue
-        print("Your new drink bar is at", drinkBar+".")
+        print("Your new drink bar is at", str(drinkBar)+".")
     if drinkBar <= 0:
         die()
-
-
-def drinkEffect(currentDrink, timeElapsed):
-    global currentHealth
-
-    lackDrink = maxDrinkValue - currentDrink
-    currentHealth -= 0.25*lackDrink*timeElapsed*timeElapsed*(6/math.log(defense))
 
 
 def drinkLoss(timeElapsed):
@@ -123,6 +116,7 @@ def gainMoney(value):
     global money
 
     money += int(value)
+    print("You were given", str(value), "dollars. Your new balance is", str(money)+".")
 
 
 def heatstroke(heatstrokeValue):
@@ -197,9 +191,9 @@ def enterCity(activator):
 
         triedKeys = input("Input Keys to the City: ")
         if triedKeys == maddaKeys:
-            print("Welcome to the City! Enjoy your stay in Madda Gate.")
+            print("Welcome to the City! Enjoy your stay in Madda Gate. \n")
         else:
-            print("You got lost! Lose 5 hunger bar, 5 drink bar, and gain 5 fatigue value!")
+            print("You got lost! Lose 5 hunger bar, 5 drink bar, and gain 5 fatigue value! \n")
             eat(-5)
             drink(-5)
             sleep(-5)
@@ -257,6 +251,229 @@ def fightingMoves(activator):
     else:
         return 0
 
+def useItem(activator):
+    def beans():
+        global inventory
+        global hungerBar
+        
+        if "BEANS" in inventory:
+            inventory = inventory.replace("|BEANS", "")
+            eat(5)
+            print("\nYou ate a can of beans. Recover 5 Hunger Bar. ")
+            print("Your new inventory is", inventory+".")
+        else:
+            print("\nYou do not have beans.")
+
+    def water():
+        global inventory
+        global drinkBar
+
+        if "WATER" in inventory:
+            inventory = inventory.replace("|WATER", "")
+            drink(5)
+            print("\nYou drank a bottle of water. Recover 5 Drink Bar. ")
+            print("Your new inventory is", inventory+".")
+        else:
+            print("\nYou do not have water.")
+
+    def grape():
+        global inventory
+        global hungerBar
+        
+        if "GRAPE" in inventory:
+            inventory = inventory.replace("|GRAPE", "")
+            eat(5)
+            drink(2)
+            print("\nYou ate a vine of grapes. Recover 5 Hunger Bar and 2 Drink Bar. ")
+            print("Your new inventory is", inventory+".")
+        else:
+            print("\nYou do not have grapes.")
+
+    def apple():
+        global inventory
+        global hungerBar
+        
+        if "APPLE" in inventory:
+            inventory = inventory.replace("|APPLE", "")
+            eat(6)
+            drink(4)
+            print("\nYou ate an apple. You're spared from the doctor another day. Recover 6 Hunger Bar and 4 Drink Bar.")
+            print("Your new inventory is", inventory+".")
+        else:
+            print("\nYou do not have an apple.")
+
+    def juice():
+        global inventory
+        global hungerBar
+        
+        if "JUICE" in inventory:
+            inventory = inventory.replace("|JUICE", "")
+            drink(8)
+            eat(2)
+            print("\nYou drank some juice. Recover 2 Hunger Bar and 8 Drink Bar. ")
+            print("Your new inventory is", inventory+".")
+        else:
+            print("\nYou do not have juice.")
+    
+    if activator == "BEANS":
+        beans()
+    elif activator == "WATER":
+        water()
+    elif activator == "GRAPE":
+        grape()
+    elif activator == "APPLE":
+        apple()
+    elif activator == "JUICE":
+        juice()
+    else:
+        print("Not valid item.")
+
+def buy(activator):
+    def buyBeans():
+        global inventory
+        global money
+
+        if "BEANS" in inventory:
+            print("Sorry. You can only have one of each item at once.")
+        else:
+            if money >= 200:
+                print("You will have", str(money-200), "dollars after this transaction. Complete?")
+                doBuyBeans = input("Input YES or NO: ")
+                if doBuyBeans == "YES" or doBuyBeans == "yes":
+                    money -= 200
+                    inventory = inventory+"|BEANS"
+                    print("\nYou bought beans for $200. Your new inventory is", inventory+".")
+                else:
+                    print("\nYou did not buy beans.")
+            else:
+                print("\nSorry. You don't have $200 for beans.")
+        
+    def buyWater():
+        global inventory
+        global money
+
+        if "WATER" in inventory:
+            print("Sorry. You can only have one of each item at once.")
+        else:
+            if money >= 200:
+                print("You will have", str(money-200), "dollars after this transaction. Complete?")
+                doBuyWater = input("Input YES or NO: ")
+                if doBuyWater == "YES" or doBuyWater == "yes":
+                    money -= 200
+                    inventory = inventory+"|WATER"
+                    print("\nYou bought water for $200. Your new inventory is", inventory+".")
+                else:
+                    print("\nYou did not buy water.")
+            else:
+                print("\nSorry. You don't have $200 for water.")
+    
+    def buyGrape():
+        global inventory
+        global money
+
+        if "GRAPE" in inventory:
+            print("Sorry. You can only have one of each item at once.")
+        else:
+            if money >= 300:
+                print("You will have", str(money-300), "dollars after this transaction. Complete?")
+                doBuyGrape = input("Input YES or NO: ")
+                if doBuyGrape == "YES" or doBuyGrape == "yes":
+                    money -= 300
+                    inventory = inventory+"|GRAPE"
+                    print("\nYou bought grapes for $300. Your new inventory is", inventory+".")
+                else:
+                    print("\nYou did not buy grapes.")
+            else:
+                print("\nSorry. You don't have $300 for grapes.")
+        
+    def buyApple():
+        global inventory
+        global money
+
+        if "APPLE" in inventory:
+            print("Sorry. You can only have one of each item at once.")
+        else:
+            if money >= 500:
+                print("You will have", str(money-500), "dollars after this transaction. Complete?")
+                doBuyApple = input("Input YES or NO: ")
+                if doBuyApple == "YES" or doBuyApple == "yes":
+                    money -= 500
+                    inventory = inventory+"|APPLE"
+                    print("\nYou bought an apple for $500. Your new inventory is", inventory+".")
+                else:
+                    print("\nYou did not buy an apple.")
+            else:
+                print("\nSorry. You don't have $500 for an apple.")
+
+    def buyJuice():
+        global inventory
+        global money
+
+        if "JUICE" in inventory:
+            print("Sorry. You can only have one of each item at once.")
+        else:
+            if money >= 500:
+                print("You will have", str(money-500), "dollars after this transaction. Complete?")
+                doBuyJuice = input("Input YES or NO: ")
+                if doBuyJuice == "YES" or doBuyJuice == "yes":
+                    money -= 500
+                    inventory = inventory+"|JUICE"
+                    print("\nYou bought juice for $500. Your new inventory is", inventory+".")
+                else:
+                    print("\nYou did not buy juice.")
+            else:
+                print("\nSorry. You don't have $500 for juice.")
+        
+        
+        
+    if activator == "BEANS":
+        buyBeans()
+    elif activator == "WATER":
+        buyWater()
+    elif activator == "GRAPE":
+        buyGrape()
+    elif activator == "APPLE":
+        buyApple()
+    elif activator == "JUICE":
+        buyJuice()
+    else:
+        print("That is not an item.")
+
+def market(activator):
+
+    def bethMarket():
+        global inventory
+
+        items = "|BEANS|WATER|GRAPE|APPLE|JUICE"
+        print("The Items Here Are:", items+".")
+        print("Simply enter GRAPE to buy a grape, for example, not |GRAPE, or GRAPE|. These two are invalid answers.")
+        print("Your current inventory is", inventory+".")
+        bethDone = 0
+        while bethDone == 0:
+            bethBuy = input("What would you like to buy? ")
+            if bethBuy == "BEANS" or bethBuy == "beans":
+                buy("BEANS")
+            elif bethBuy == "WATER" or bethBuy == "water":
+                buy("WATER")
+            elif bethBuy == "GRAPE" or bethBuy == "grape":
+                buy("GRAPE")
+            elif bethBuy == "APPLE" or bethBuy == "apple":
+                buy("APPLE")
+            elif bethBuy == "JUICE" or bethBuy == "juice":
+                buy("JUICE")
+            else:
+                print("Not an Item.")
+
+            bethDoneYet = input("\nAre you done yet? YES or NO: ")
+            if bethDoneYet == "YES" or bethDoneYet == "yes":
+                bethDone += 1
+            elif bethDone == "NO" or bethDoneYet == "no":
+                print("The market appreciates your continual patronage.")
+            else:
+                print("You seem to have motioned to stay.")
+
+    if activator == "BETH":
+        bethMarket()
 
 def beginFight(activator):
     def sinSpiritOne():
@@ -388,6 +605,20 @@ def cutscene(activator):
         input(""); time.sleep(1)
 
 
+    def cutscene3():
+        print("ANGEL was wrong."); time.sleep(0.2)
+        print("Madda Gate wasn't anything near a city, or anything grand, or even anything moderately good."); time.sleep(0.2)
+        print("The smell of rot filled the streets, only covered by the even worse scent of years of smoke and ash accumulating from the chimneys fed by old wood."); time.sleep(0.2)
+        print("Yet, the people were smiling, the children were laughing, and the elders of the city smiled."); time.sleep(0.2)
+        print("It was curious to you. SANCTUARY City was nothing like this."); time.sleep(0.2)
+        print("SANCTUARY City was better, it was cleaner, it was brighter, and it was just superior in terms of quality of life."); time.sleep(0.2)
+        print("Yet, nobody every smiled."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("You made it into the city, hoping for a place to rest."); time.sleep(0.2)
+        print("But even the outside was a better place than this."); time.sleep(0.2)
+        print("However, you couldn't stop smiling, and you'd never felt so \"home\" before."); time.sleep(0.2)
+        print("Have you ever been home in the first place? \n"); time.sleep(0.2)
+
     if activator == 1:
         cutscene1()
 
@@ -431,11 +662,16 @@ def meetCharacter(activator):
         print("Your current drink bar is", str(drinkBar)+"."); time.sleep(0.5)
         print("Your current fatigue value is", str(fatigueValue)+"."); time.sleep(0.5)
         print("ANGEL: It may sound weird, but you want BARS as HIGH as possible and VALUES as LOW as possible!"); time.sleep(0.5)
+        print("ANGEL: However! Don't eat too much, or drink too much! Then, you'll actually lose hunger bars and be more unhealthy!")
+        input("")
+        print("ANGEL: Your inventory can only be used at certain times, so when it's allowed, you should utilize it as much as possible!")
+        print("ANGEL: Don't be the one who starves cause they didn't eat during mealtimes!")
         input("")
         print("ANGEL: Ah! Moving on, your current health is at", str(currentHealth)+"."); time.sleep(0.5)
         print("ANGEL: You have", str(money), "dollars right now too! And the world bank starts everyone off with", str(bankAccount), "dollars in the bank. \nANGEL: Worldwide rates are, mmm, GENERALLY at around 2.5% per time interval."); time.sleep(0.5)
         print("ANGEL: Well, that's all! I gotta run, but if you need anything, someone'll be there to help you out!"); time.sleep(0.5)
-        print("ANGEL: AH! How could I forget? Don't ever forget the keys to the city!\n"); time.sleep(0.5)
+        print("ANGEL: AH! How could I forget? Don't ever forget the keys to the city!"); time.sleep(0.5)
+        input(""); time.sleep(0.5)
 
     def meetAva():
         global maddaKeys
@@ -447,7 +683,8 @@ def meetCharacter(activator):
         print(name+": Oh. Sorry, I was busy over there."); time.sleep(0.2)
         print("AVA: That's visible. Whatever, anyways, what'cha lookin' for?"); time.sleep(0.2)
         input(""); time.sleep(0.2)
-        print("AVA: Uhhh. The city? I... don't think you know where this is. You lookin' for the next over? Mae- oh. Sigh, you're lookin' for Madda Gate, ain't ya?"); time.sleep(0.2)
+        print("AVA: Uhhh. The city? I... don't think you know where this is. You lookin' for the next over? Mae- oh. Sigh, you ain't lookin' for Madda Gate, are ya?"); time.sleep(0.2)
+        input(""); time.sleep(0.2)
         print("AVA: Hahaha! My grandparents would love being with you. Always talkin' about some... uhh, Madda City? I dunno."); time.sleep(0.2)
         print("AVA: Some sanctuary city too, something to deal with it, yadda yadda."); time.sleep(0.2)
         print("AVA: Grandparents' legends, am I right?"); time.sleep(0.2)
@@ -466,11 +703,72 @@ def meetCharacter(activator):
         print("AVA: Yeah, yeah. You're welcome. Now go spread your Sanctuary Heretic Religion somewhere else."); time.sleep(0.2)
         print("AVA: Peace out!\n"); time.sleep(0.2)
 
+    def meetBeth():
+        print("XXXX: Well, hello there! Did I overhear you talking about reaching the market?"); time.sleep(0.2)
+        print(name+": Yes, do you know where this city- town's market is?"); time.sleep(0.2)
+        print("XXXX: Ah! But of course! The name's BETH. I'm the city's most avid spender, and I was ecstatic hearing about a fellow shopper being in the city."); time.sleep(0.2)
+        print("BETH: Come on, let us go. It's been ages since I was able to spend with somebody else."); time.sleep(0.2)
+        input("")
+        print("BETH: ... and as you know, the city's infrastructre's been deteriorating so fast, but the next town over's so far away, and nobody knows how to repair it!"); time.sleep(0.2)
+        print(name+": Does this city not have a construction team?"); time.sleep(0.2)
+        print("BETH: Oh, but we do! This city's people are just so... lazy! Nothing ever gets done, and DAVID's attitude certainly doesn't help."); time.sleep(0.2)
+        print(name+": DAVID?"); time.sleep(0.2)
+        print("BETH: Yes, DAVID. Former owner of a large construction and engineering company?"); time.sleep(0.2)
+        print("BETH: Former chief of the town's public works agency?"); time.sleep(0.2)
+        print("BETH: ... Not familiar with him?"); time.sleep(0.2)
+        print("BETH: Ah, you're a newcomer. Don't worry, once you meet him, you'll begin to hate him as much as I do."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("BETH: Ah! We've at last reached the market!"); time.sleep(0.2)
+        print("BETH: Don't worry about the buildings, the merchants are as reliable and as forgiving as ever. "); time.sleep(0.2)
+        print(name+": I might not have money for all of this..."); time.sleep(0.2)
+        print("BETH: Oh! Darling, don't worry about all that, the mere act of shopping with me already makes me happy."); time.sleep(0.2)
+        print("BETH: If you need some, I've got a ton. Here's a bit just in case you can't buy this market clean. Have tons of fun!"); time.sleep(0.2)
+        gainMoney(2000)
+        print("")
+        market("BETH"); time.sleep(0.2)
+        print("BETH: Done now? That was surprisingly quick."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("BETH: If I may, can I look at what's in your bag?"); time.sleep(0.2)
+        print("BETH: Oh! You have quite an eye! This... this food is of the finest quality! I thought you were new to the town? How on earth are you this good?"); time.sleep(0.2)
+        print(name+": I... have some... practice, let's say. From... another- let's just say town. "); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("BETH: Well, that's very lucky of you. You'll be eating great food tonight, won't you?"); time.sleep(0.2)
+        print(name+": This food isn't the best I've seen..."); time.sleep(0.2)
+        print("BETH: Are you kidding me?! These beans are fresh, pure, and smell of pure deliciousness!"); time.sleep(0.2)
+        print("BETH: This water... it's the cleanest I've seen in years! Maybe even ever!"); time.sleep(0.2)
+        print(name+": If you need it, I could give it to you, in return for the money you lent me..."); time.sleep(0.2)
+        print("BETH: Oh, I would never imagine! This luxury water and food... I couldn't take it from you for a million dollars!"); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print(name+": ..."); time.sleep(0.2)
+        print(name+": ..."); time.sleep(0.2)
+        print(name+": What happened here?"); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+
+    def meetMaddaNPC():
+        print("You walk down the city's streets sadly, having more questions than you do answers, and still contemplating what exactly happened between the few years ANGEL was here and now."); time.sleep(0.2)
+        print("Suddenly, you hear shrill voices, sounding almost like screams, yet weaker."); time.sleep(0.2)
+        print("CITIZEN 1: Aaghhh!"); time.sleep(0.2)
+        print("CITIZEN 2: Mom, are you ok?"); time.sleep(0.2)
+        print("CITIZEN 1: Sigh... your father's house is falling down. "); time.sleep(0.2)
+        print("CITIZEN 1: He tried to hard to build this. Yet it continues to crumble, and our family may have to move out soon."); time.sleep(0.2)
+        print("CITIZEN 2: Mom..."); time.sleep(0.2)
+        print("CITIZEN 1: Let's go. Don't let yourself die of the plague."); time.sleep(0.2)
+        input("")
+
+
     if activator == "ANGEL":
         meetAngel()
 
     elif activator == "AVA":
         meetAva()
+
+    elif activator == "BETH":
+        meetBeth()
+        meetMaddaNPC()
+
+    elif activator == "MADDANPC":
+        meetMaddaNPC()
+        meetBeth()
 
 
 maddaKeys = "M41M552A"
@@ -496,5 +794,6 @@ skillpoint = 100
 
 name = ""
 skills = "SINGLEPUNCH | TWOPUNCH | THREEPUNCH | GATLING | SWORDFIGHT"
+inventory = "|BEANS|WATER"
 
 beginGame()
