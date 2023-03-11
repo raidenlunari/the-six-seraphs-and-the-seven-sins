@@ -54,6 +54,7 @@ def eatLoss(timeElapsed):
     global hungerBar
 
     hungerBar -= timeElapsed*0.1
+    print(str(timeElapsed), "hours have passed. Your hunger bar has gone down. Your new hunger bar is at", str(hungerBar)+".")
 
 
 def drink(drinkValue):
@@ -75,6 +76,7 @@ def drinkLoss(timeElapsed):
     global drinkBar
 
     drinkBar -= timeElapsed*0.15
+    print(str(timeElapsed), "hours have passed. Your drink bar has gone down. Your new drink bar is at", str(drinkBar)+".")
 
 
 def sleep(sleepValue):
@@ -90,16 +92,19 @@ def sleep(sleepValue):
         print("Your new fatigue level is at", fatigueValue+".")
 
 
-def sleepEffect(currentFatigue, timeElapsed):
+def sleepEffect(timeElapsed):
     global currentHealth
 
-    currentHealth -= 0.1*currentFatigue*timeElapsed*timeElapsed*(2/math.log(defense))
+    currentHealth -= round(0.1*fatigueValue*timeElapsed*timeElapsed*(2/math.log(defense)))
+    print("Because of your lack of sleep, you have begun to have your health deteriorate.")
+    print("Your new health is at", str(currentHealth)+". Stay safe out there. \n")
 
 
 def sleepLoss(timeElapsed):
     global fatigueValue
 
     fatigueValue += timeElapsed*0.1
+    print(str(timeElapsed), "hours have passed. You have become more tired. Your new fatigue bar is at", str(fatigueValue)+".")
 
 
 def healthDiff(diff):
@@ -107,8 +112,10 @@ def healthDiff(diff):
 
     if diff >= 0:
         currentHealth += diff
+        currentHealth = round(currentHealth)
     else:
-        currentHealth -= diff*(2/math.log(defense))
+        currentHealth += diff*(2/math.log(defense))
+        currentHealth = round(currentHealth)
 
     if currentHealth <= 0:
         die()
@@ -495,23 +502,26 @@ def beginFight(activator):
         global currentHealth
 
         deathsBefore = deaths
-        sinSpiritHealth = 1000
+        sinSpiritHealth = 2500
         while deaths == deathsBefore and sinSpiritHealth > 0:
+
             print("Your skills are:", skills)
             print("Note that using a skill not in your skills will do NOTHING. You effectively skip your turn.")
             attack = input("What attack would you like to use: ")
             sinSpiritHealth -= fightingMoves(attack)
-            print("")
+            print(""); time.sleep(0.5)
             print("You now have", skillpoint, "skillpoints.")
             print("You did", fightingMoves(attack), "damage. The sin spirit now has", sinSpiritHealth, "health.")
-            print("")
+            print(""); time.sleep(0.5)
 
-            sinSpiritDamage = random.randint(50, 100)
-            currentHealth -= sinSpiritDamage
+            oldHealth = currentHealth
+            sinSpiritDamage = random.randint(-100, -50)
+            healthDiff(sinSpiritDamage)
+            trueHealthDiff = round(oldHealth - currentHealth)
             print("The Sin Spirit hit you!")
-            print("Your new HP is", str(currentHealth)+". You took", sinSpiritDamage, "damage.")
-            if currentHealth <= 0:
-                die()
+            print("Your new HP is", str(currentHealth)+". You took", -(sinSpiritDamage), "raw damage. You took", str(trueHealthDiff), "real damage."); time.sleep(0.5)
+            # if currentHealth <= 0:
+            #     die()
             print("")
 
     if activator == "SLOTH":
@@ -530,18 +540,18 @@ def create_instructions():
     print("Answers are case-sensitive. Answer in UPPERCASE or lowercase when asked or appropriate.")
     input("")
     print("Thank you for joining us on this adventure! We hope you enjoy the game and succeed.\n")
-    print("------------\n------------\n------------\n------------")
+    print("------------\n------------\n------------\n------------"); time.sleep(1)
 
 
 def cutscene(activator):
     def cutscene1():
         global name
 
-        print("TIME: XX:XX, June XX, 5XXX \nLOCATION: XXXXXXX \nTRANSMISSION: 0XXXX"); time.sleep(0.15)
-        print("Head GENERAL: Private, return to XXXXXX immediately!"); time.sleep(0.2)
-        print("Head GENERAL: Return-  to- XXXXXX! Under-  attack!"); time.sleep(0.15)
-        print("Head GENERAL: Soldiers! Regroup at XXXXXXXXX City! I repeat-"); time.sleep(0.2)
-        print("Head GENERAL: XXXXXXXXX City!"); time.sleep(0.1)
+        print("TIME: XX:XX, June XX, 5XXX \nLOCATION: XXXXXXX \nTRANSMISSION: 0XXXX"); time.sleep(0.5)
+        print("Head GENERAL: Private, return to XXXXXX immediately!"); time.sleep(0.5)
+        print("Head GENERAL: Return-  to- XXXXXX! Under-  attack!"); time.sleep(0.5)
+        print("Head GENERAL: Soldiers! Regroup at XXXXXXXXX City! I repeat-"); time.sleep(0.5)
+        print("Head GENERAL: XXXXXXXXX City!"); time.sleep(0.5)
         input("")
         print("TIME: XX:XX, July XX, 5XXX \nLOCATION: XXXXXXXX \nTRANSMISSION: 0XXXX"); time.sleep(0.15)
         print("___E: Do not fear. "); time.sleep(0.15)
@@ -694,10 +704,10 @@ def meetCharacter(activator):
     def meetAva():
         global maddaKeys
 
-        print("AVA: Yo, what are you looking so wistfully at?"); time.sleep(0.2)
+        print("XXX: Yo, what are you looking so wistfully at?"); time.sleep(0.2)
         input(""); time.sleep(0.2)
-        print("AVA: Hello?"); time.sleep(0.2)
-        print("AVA: Rude. The name's Ava."); time.sleep(0.2)
+        print("XXX: Hello?"); time.sleep(0.2)
+        print("XXX: Rude. The name's Ava."); time.sleep(0.2)
         print(name+": Oh. Sorry, I was busy over there."); time.sleep(0.2)
         print("AVA: That's visible. Whatever, anyways, what'cha lookin' for?"); time.sleep(0.2)
         input(""); time.sleep(0.2)
@@ -840,6 +850,11 @@ def meetCharacter(activator):
 
     def meetCarl():
         global inventory
+        
+        eatLoss(10)
+        drinkLoss(10)
+        sleepLoss(10)
+        sleepEffect(10)
 
         print("You walk down the streets angrily, looking for CARL."); time.sleep(0.2)
         print(name+": Excuse me, do you know where CARL is?"); time.sleep(0.2)
@@ -893,6 +908,7 @@ def meetCharacter(activator):
             print("DAVID: I'm... not sure what you're saying here, but okay! I guess you don't need anything...")
 
         print("You finish what you're doing, and step back out.")
+        print("Suddenly, you hear a cry out from the other people in the town.")
 
 
     if activator == "ANGEL":
