@@ -2,6 +2,7 @@ import random
 import math
 import time
 
+
 def beginGame():
     
     # phase ONE
@@ -17,6 +18,7 @@ def beginGame():
         meetCharacter("BETH")
     elif maddaChoiceOne == "WALK":
         meetCharacter("MADDANPC")
+    meetCharacter("CARL")
 
 def die():
     global deaths
@@ -206,46 +208,58 @@ def fightingMoves(activator):
     def singlePunch():
         global skillpoint
         global attack
+
         skillpoint -= 1
         return int(attack*0.5)
 
     def twoPunch():
         global skillpoint
         global attack
+
         skillpoint -= 1.5
         return int(attack*1.25)
 
     def threePunch():
         global skillpoint
         global attack
+
         skillpoint -= 2
         return int(attack*random.randint(2, 3))
 
     def gatling():
         global skillpoint
         global attack
+
         skillpoint -= 3
         return int(round(attack*(random.randrange(2, 5))))
 
     def swordfight():
         global skillpoint
         global attack
+
         skillpoint -= 5
         return int(round(attack*(random.randrange(1, 3)*(0.2*skillpoint)*0.2)))
 
-    if activator == "SINGLEPUNCH" or activator == "singlepunch":
+    validIn = 0
+
+    if activator in skills:
+        validIn += 1
+    else:
+        pass
+
+    if (activator == "SINGLEPUNCH" or activator == "singlepunch") and validIn == 1:
         return singlePunch()
 
-    elif activator == "TWOPUNCH" or activator == "twopunch":
+    elif (activator == "TWOPUNCH" or activator == "twopunch") and validIn == 1:
         return twoPunch()
 
-    elif activator == "THREEPUNCH" or activator == "threepunch":
+    elif (activator == "THREEPUNCH" or activator == "threepunch") and validIn == 1:
         return threePunch()
 
-    elif activator == "GATLING" or activator == "gatling":
+    elif (activator == "GATLING" or activator == "gatling") and validIn == 1:
         return gatling()
 
-    elif activator == "SWORDFIGHT" or activator == "swordfight":
+    elif (activator == "SWORDFIGHT" or activator == "swordfight") and validIn == 1:
         return swordfight()
 
     else:
@@ -484,6 +498,7 @@ def beginFight(activator):
         sinSpiritHealth = 1000
         while deaths == deathsBefore and sinSpiritHealth > 0:
             print("Your skills are:", skills)
+            print("Note that using a skill not in your skills will do NOTHING. You effectively skip your turn.")
             attack = input("What attack would you like to use: ")
             sinSpiritHealth -= fightingMoves(attack)
             print("")
@@ -564,9 +579,6 @@ def cutscene(activator):
         print("TIME: XX:XX, October XX, 5XXX \nLOCATION: Orion Supergalaxy \nTRANSMISSION: 1XXXX"); time.sleep(0.5)
         print(name+": ..."); time.sleep(0.2)
         input("")
-        print("TIME: XX:XX, December XX, 5XXX \nLOCATION: Sagittarius Supercluster \nTRANSMISSION: 1XXXX"); time.sleep(0.5)
-        print(name+": ..."); time.sleep(0.2)
-        input("")
         print("TIME: 06: 31, March XX, 6XXX \nLOCATION: Salvation of Stardust \nTRANSMISSION: 12XX5"); time.sleep(0.5)
         print(name+": ...")
         input("")
@@ -625,9 +637,14 @@ def cutscene(activator):
     elif activator == 2:
         cutscene2()
 
+    elif activator == 3:
+        cutscene3()
+
 def meetCharacter(activator):
     def meetAngel():
+        global maxFoodValue
         global hungerBar
+        global maxDrinkValue
         global drinkBar
         global fatigueValue
         global currentHealth
@@ -663,6 +680,7 @@ def meetCharacter(activator):
         print("Your current fatigue value is", str(fatigueValue)+"."); time.sleep(0.5)
         print("ANGEL: It may sound weird, but you want BARS as HIGH as possible and VALUES as LOW as possible!"); time.sleep(0.5)
         print("ANGEL: However! Don't eat too much, or drink too much! Then, you'll actually lose hunger bars and be more unhealthy!")
+        print("Your max food bar is", str(maxFoodValue), "and your max drink bar is", str(maxDrinkValue)+".")
         input("")
         print("ANGEL: Your inventory can only be used at certain times, so when it's allowed, you should utilize it as much as possible!")
         print("ANGEL: Don't be the one who starves cause they didn't eat during mealtimes!")
@@ -711,9 +729,9 @@ def meetCharacter(activator):
         input("")
         print("BETH: ... and as you know, the city's infrastructre's been deteriorating so fast, but the next town over's so far away, and nobody knows how to repair it!"); time.sleep(0.2)
         print(name+": Does this city not have a construction team?"); time.sleep(0.2)
-        print("BETH: Oh, but we do! This city's people are just so... lazy! Nothing ever gets done, and DAVID's attitude certainly doesn't help."); time.sleep(0.2)
-        print(name+": DAVID?"); time.sleep(0.2)
-        print("BETH: Yes, DAVID. Former owner of a large construction and engineering company?"); time.sleep(0.2)
+        print("BETH: Oh, but we do! This city's people are just so... lazy! Nothing ever gets done, and CARL's attitude certainly doesn't help."); time.sleep(0.2)
+        print(name+": CARL?"); time.sleep(0.2)
+        print("BETH: Yes, CARL. Former owner of a large construction and engineering company?"); time.sleep(0.2)
         print("BETH: Former chief of the town's public works agency?"); time.sleep(0.2)
         print("BETH: ... Not familiar with him?"); time.sleep(0.2)
         print("BETH: Ah, you're a newcomer. Don't worry, once you meet him, you'll begin to hate him as much as I do."); time.sleep(0.2)
@@ -753,7 +771,128 @@ def meetCharacter(activator):
         print("CITIZEN 1: He tried to hard to build this. Yet it continues to crumble, and our family may have to move out soon."); time.sleep(0.2)
         print("CITIZEN 2: Mom..."); time.sleep(0.2)
         print("CITIZEN 1: Let's go. Don't let yourself die of the plague."); time.sleep(0.2)
-        input("")
+        input(""); time.sleep(0.2)
+        print("You walk down the streets, trying to forget what happened in that interaction."); time.sleep(0.2)
+        print("A plague? That shouldn't be possible. Everybody in the city was so happy, and even the dirt and waste didn't seem to bring disease or hardship."); time.sleep(0.2)
+        print("You walk down further and further down the road, only to see the buildings deteriorate and the roads become mud."); time.sleep(0.2)
+        print("What was left of Main Street ended early, only revealing a pool of brown sludge from the rot and soil mixing together in a basin."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("Soon, rain starts to fall, creating a deeper puddle you could only hope to cross without getting wet."); time.sleep(0.2)
+        print("But the city was still interesting."); time.sleep(0.2)
+        print("So you go forward."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("SANCTUARY City's slums were almost like this. "); time.sleep(0.2)
+        print("Cold, wet, smelly, and broken."); time.sleep(0.2)
+        print("When you were on that planet, you had learned that such a place was \"inhospitable, awful, and unfit for human residence\"."); time.sleep(0.2)
+        print("Yet, this kind of environment didn't even seem to surprise you."); time.sleep(0.2)
+        print("Why?"); time.sleep(0.2)
+        print("As far as you knew, you hadn't ever been here before."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("You hear voices again, this time yelling and booming from the interior of a cathedral."); time.sleep(0.2)
+        print("You enter, of course. It's not like some priest inside could hurt you that bad."); time.sleep(0.2)
+        print("But the interior of the cathedral could barely even be called an interior."); time.sleep(0.2)
+        print("The walls were stripped, the wood was moldy, and the furnishings were completely and entirely gone."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("AUDIENCE MEMBER 1: You are surprised?"); time.sleep(0.2)
+        maddaNPCChoice = input("YES or NO: "); time.sleep(0.2)
+        if maddaNPCChoice == "YES":
+            print("AUDIENCE MEMBER 1: Ah... me too. I thought this would be a cathedral. It turns out it's barely even holding itself up."); time.sleep(0.2)
+            print("AUDIENCE MEMBER 1: Hey. What brought you to this city?"); time.sleep(0.2)
+        else:
+            print("AUDIENCE MEMBER 1: Hmm. This is, ah... what do you call it... commonplace? I see."); time.sleep(0.2)
+        print("AUDIENCE MEMBER 1: I, uhh... personally came here to commission somebody, hearing from others about how his work was heavenly."); time.sleep(0.2)
+        print("AUDIENCE MEMBER 1: It seems I was lied to."); time.sleep(0.2); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("AUDIENCE MEMBER 1: I believe I heard of a master architect, uhh... CARL, hmm."); time.sleep(0.2)
+        print("AUDIENCE MEMBER 1: Our architects in a uhh... small village out there aren't great."); time.sleep(0.2)
+        print("AUDIENCE MEMBER 1: Active, sure, but not skilled at all, hmm."); time.sleep(0.2)
+        print("AUDIENCE MEMBER 1: It'd be hard to believe a city's architects would be worse, hmm?"); time.sleep(0.2)
+        print("AUDIENCE MEMBER 1: So I think the only possibility here is that he's lazy."); time.sleep(0.2)
+        print("AUDIENCE MEMBER 1: Ah... that's sad."); time.sleep(0.2)
+        print("AUDIENCE MEMBER 1: It seems I came for nothing."); time.sleep(0.2)
+        print("He leaves."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("You hear a person in the cathedral begin to speak loudly through a hollow tube."); time.sleep(0.2)
+        print("His voice is failing, and he looks aged and worn, but somehow, he still appears very strong."); time.sleep(0.2)
+        print("PRIEST: Our god has failed us."); time.sleep(0.2)
+        print("PRIEST: The Great City of Madda and its Gate have been left to rot and die."); time.sleep(0.2)
+        print("PRIEST: We must begin to work by ourselves. In our OWN city!"); time.sleep(0.2)
+        print("Jeers ring out from the audience."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("PRIEST: CARL, our architect, has failed us too."); time.sleep(0.2)
+        print("PRIEST: We revered him as the savior and the true leader of Madda City. And he's only brought us pain."); time.sleep(0.2)
+        print("PRIEST: The time is now! We must win! Take back our Madda! Rebel against those who refuse to help!"); time.sleep(0.2)
+        print("A roar from the audience begins to appear."); time.sleep(0.2)
+        print("But it's against him."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("PRIEST: N-now, now, audience! Let's not get too uproarious, and listen to me!"); time.sleep(0.2)
+        print("AUDIENCE MEMBER 2: Heretic!"); time.sleep(0.2)
+        print("AUDIENCE MEMBER 3: Ungrateful old geezer!"); time.sleep(0.2)
+        print("AUDIENCE MEMBER 2: Kill him!"); time.sleep(0.2)
+        print("AUDIENCE: Kill him! Kill him!"); time.sleep(0.2)
+        print("The priest starts to run."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("His old bones fail him. "); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("AUDIENCE MEMBER 1: Turn away. This is... what they call..."); time.sleep(0.2)
+        print("AUDIENCE MEMBER 1: Commonplace."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+
+    def meetCarl():
+        global inventory
+
+        print("You walk down the streets angrily, looking for CARL."); time.sleep(0.2)
+        print(name+": Excuse me, do you know where CARL is?"); time.sleep(0.2)
+        print("CITIZEN 1: I don't know. Nobody's seen him for years."); time.sleep(0.2)
+        print(name+": Sorry."); time.sleep(0.2)
+        print("You keep walking."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print(name+": Excuse me, do YOU know where CARL is?"); time.sleep(0.2)
+        print("CITIZEN 2: Don't speak of him."); time.sleep(0.2)
+        print("CITIZEN 3: He's dead to us."); time.sleep(0.2)
+        print(name+": Sorry about that."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("CITIZEN 4: Excuse me? "); time.sleep(0.2)
+        print("CITIZEN 4: Were you looking for a certain CARL?"); time.sleep(0.2)
+        print(name+": Yes, do you know where he is?"); time.sleep(0.2)
+        print("CITIZEN 4: Of course! Others may have begun to refuse thinking about him, but I still believe in his ability to change."); time.sleep(0.2)
+        print("CITIZEN 4: The name's DAVID. Nice to meet you!"); time.sleep(0.2)
+        print(name+": Hello there. My name's", name+"."); time.sleep(0.2)
+        print("DAVID: ...", name+"? That's... an odd name. I'm supposing you're not from this place?"); time.sleep(0.2)
+        print("DAVID: Oh, finally! Someone new! This city's been stagnant, boring, and stationary for far too long."); time.sleep(0.2)
+        input(""); time.sleep(0.2)
+        print("DAVID: What do you think of the city? Nice, huh? It's been a few years since anyone's come to fix it, but I still think it's nice!"); time.sleep(0.2)
+        print("DAVID: So, what can I do for you? Eat? Drink? Sleep? Find somewhere to sit? I got a friend at a comfy hotel. ")
+        print("DAVID: You gotta rest first, anyways, before getting into anywhere CARL built for himself.")
+        print("DAVID: So, what'cha want?")
+        davidChoiceOne = input("Input FOOD, DRINK, SLEEP, or INVENTORY: ")
+        if davidChoiceOne == "FOOD" or davidChoiceOne == "food":
+            print("DAVID: Food, huh? Well, I'm the one for you! Come, I have some friends at a fancy restaurant!")
+            print("You eat with DAVID and his friends at a restaurant.")
+            eat(5)
+            input("")
+        elif davidChoiceOne == "DRINK" or davidChoiceOne == "drink":
+            print("DAVID: Drinking? Not sure if you like alcohol, but the bar does have nonalcoholic drinks, if you're interested in that."); time.sleep(0.2)
+            print("You go with DAVID to a bar and drink beverages of your choice.")
+            drink(5)
+            input("")
+        elif davidChoiceOne == "SLEEP" or davidChoiceOne == "sleep":
+            print("DAVID: Sleep? No problem! I can take you to the fanciest hotel in the city, free of charge! For you, at least."); time.sleep(0.2)
+            print("You go with DAVID to a hotel and sleep well.")
+            sleep(5)
+            input("")
+        elif davidChoiceOne == "INVENTORY" or davidChoiceOne == "inventory":
+            print("DAVID: Just wanna sit down? Got it. Follow me to the hotel anyways, they have the nicest seats around there!")
+            print("You go with DAVID to a hotel and sit down.")
+            print("Your inventory is:", inventory+".")
+            print("Type in the capital letters, none of the bars, and in full capital letters.")
+            davidInventory = input("Input item to use from your inventory: ")
+            useItem(davidInventory)
+            input("")
+        else:
+            print("DAVID: I'm... not sure what you're saying here, but okay! I guess you don't need anything...")
+
+        print("You finish what you're doing, and step back out.")
 
 
     if activator == "ANGEL":
@@ -769,6 +908,9 @@ def meetCharacter(activator):
     elif activator == "MADDANPC":
         meetMaddaNPC()
         meetBeth()
+
+    elif activator == "CARL":
+        meetCarl()
 
 
 maddaKeys = "M41M552A"
