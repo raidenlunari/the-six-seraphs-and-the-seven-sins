@@ -86,10 +86,10 @@ def sleep(sleepValue):
     sleepValue = int(sleepValue)
     if (fatigueValue - sleepValue) < minSleepValue:
         fatigueValue = minSleepValue
-        print("Your new fatigue level is at", fatigueValue+".")
+        print("Your new fatigue level is at", str(fatigueValue)+".")
     else:
         fatigueValue -= sleepValue
-        print("Your new fatigue level is at", fatigueValue+".")
+        print("Your new fatigue level is at", str(fatigueValue)+".")
 
 
 def sleepEffect(timeElapsed):
@@ -640,6 +640,23 @@ def cutscene(activator):
         print("But even the outside was a better place than this."); time.sleep(0.2)
         print("However, you couldn't stop smiling, and you'd never felt so \"home\" before."); time.sleep(0.2)
         print("Have you ever been home in the first place? \n"); time.sleep(0.2)
+
+    def cutscene4():
+        print("CARL kicks you out of his house, in a fit of rage.")
+        print("At this point, you had no idea who was really right in this city.")
+        print("What on earth was wrong with the people on this planet?")
+        print("Suddenly, a shockwave from the distance knocks you down.")
+        input("")
+        print("You can't seem to decipher where it comes from at first, but you suddenly sense a terrible blast of heat from a familiar direction.")
+        print("The direction of Madda Gate.")
+        input("")
+        print("Was this CARL's fault again?")
+        print("No, that shouldn't be possible. This amount of heat had only happened once.")
+        print("___'s attack on SANCTUARY City.")
+        input("")
+        print("But this shouldn't be possible.")
+        print("Surely, those legions of ___E and D____ had defeated that singular being.")
+        print("Surely, they'd won.")
 
     if activator == 1:
         cutscene1()
