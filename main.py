@@ -19,6 +19,9 @@ def beginGame():
     elif maddaChoiceOne == "WALK":
         meetCharacter("MADDANPC")
     meetCharacter("CARL")
+    cutscene(4)
+    cutscene(5)
+    print("demo ends here")
 
 def die():
     global deaths
@@ -657,6 +660,25 @@ def cutscene(activator):
         print("But this shouldn't be possible.")
         print("Surely, those legions of ___E and D____ had defeated that singular being.")
         print("Surely, they'd won.")
+        input("")
+        print("You feel a severe headache.")
+        print("You fall to the ground.")
+        input("")
+
+    def cutscene5():
+        print("TIME: XX:XX:XXX, XXXX, XX, XXXX \nLOCATION: BERLIN \nTRANSMISSION: 11110")
+        input("")
+        print("____: XXX XXXX CITY XXXXXXXX XX:XX XXXX")
+        print("____: HAIL THE KINGDOM OF ___")
+        input("")
+        print("TIME: XX:XX:XXX, XXXX, XX, 6000 \nLOCATION: RUINS OF XXX XXXX CITY \nTRANSMISSION: 11111")
+        print("Head GENERAL: ___'s assault on our nation has succeeded.")
+        print("Head GENERAL: The new year's assault succeeded. XXX XXXX CITY has fallen.")
+        print("Head GENERAL: ____ is heading to XXNXXXX to hunt for the God of E________")
+        print("Head GENERAL: We don't know where ___E is.")
+        print("Head GENERAL: Final transmission. ")
+        print("Head GENERAL: We're done.")
+        input("")
 
     if activator == 1:
         cutscene1()
@@ -666,6 +688,12 @@ def cutscene(activator):
 
     elif activator == 3:
         cutscene3()
+
+    elif activator == 4:
+        cutscene4()
+
+    elif activator == 5:
+        cutscene5()
 
 def meetCharacter(activator):
     def meetAngel():
@@ -1097,6 +1125,14 @@ def meetCharacter(activator):
         print("CARL: I ain't a saint. But I ain't a full-blown devil anytime yet."); time.sleep(0.2)
         input(""); time.sleep(0.2)
 
+    def meetMaddaFinale():
+        print("You wake up.")
+        print("You wake up in a sea of red.")
+        print("Not again, you thought.")
+        input("")
+        print("But once you rub your eyes a few times, you see the full scene in the city.")
+        print("")
+
     if activator == "ANGEL":
         meetAngel()
 
@@ -1140,4 +1176,4 @@ name = ""
 skills = "SINGLEPUNCH | TWOPUNCH | THREEPUNCH | GATLING | SWORDFIGHT"
 inventory = "|BEANS|WATER"
 
-beginGame()
+beginFight("SLOTH")
