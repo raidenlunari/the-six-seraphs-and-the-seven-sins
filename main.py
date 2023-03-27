@@ -517,9 +517,9 @@ def beginFight(activator):
         print("Begin your fight with the Sin Spirit.")
         print("To fight, instructions are given.")
         print("Good luck. You'll certainly need it.")
-        healthDiff(100)
 
         while deaths == deathsBefore and sinSpiritHealth > 0:
+            global skillpoint
 
             print("Your skills are:", skills)
             print("Note that using a skill not in your skills will do NOTHING. You effectively skip your turn.")
