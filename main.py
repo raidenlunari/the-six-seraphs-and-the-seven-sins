@@ -516,6 +516,7 @@ def beginFight(activator):
         sinSpiritHealth = 2500
         print("Begin your fight with the Sin Spirit.")
         print("To fight, instructions are given.")
+        print("Use CAPITAL LETTERS. This is case-sensitive, and you won't do damage if you don't do that.")
         print("Good luck. You'll certainly need it.")
 
         while deaths == deathsBefore and sinSpiritHealth > 0:
